@@ -1,36 +1,74 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Card, Form, Button, Spinner } from 'react-bootstrap';
+import Swal from 'sweetalert2'
+import { useAuthStore } from '../hooks/useAuthStore'
+import { useForm } from '../hooks/useForm'
+
+const loginFormFields = {
+    loginEmail: '',
+    loginPassword: '',
+}
 
 const LoginScreen = () => {
 
-    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
-    const handleLogin = () => {
-        navigate('/' , { 
-            replace: true
-        });
+    const { startLogin, errorMessage } = useAuthStore();
+
+    const { loginEmail, loginPassword, onInputChange: onLoginInputChange } = useForm( loginFormFields );
+
+    const loginSubmit = ( event ) => {
+        event.preventDefault();
+        startLogin({ email: loginEmail, password: loginPassword });
+        setLoading(true);
+        
     }
 
-    return (
-        <div className="container mt-5">
-            <h1>Login</h1>
-            <hr/>
-            <div className="form-group">
-      <label for="exampleInputEmail1" classNameName="form-label mt-4">Rut</label>
-      <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
-      <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div>
-    <div className="form-group">
-      <label for="exampleInputPassword1" className="form-label mt-4">Password</label>
-      <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
+    useEffect(() => {
+        if ( errorMessage !== undefined ) {
+            Swal.fire('Error en la autenticación', errorMessage, 'error');
+        }
+    }, [errorMessage])
+    
 
-    </div>
-    <br/>
-            <button className="btn btn-primary"
-            onClick={handleLogin}>
-                Login
-            </button>
-        </div>
+    return (
+        <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
+            <Card style={{ width: "50rem" }}>
+                <Card.Body>
+                <Card.Title>Iniciar sesión</Card.Title>
+                <Form onSubmit={ loginSubmit }>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Correo electrónico</Form.Label>
+                    <Form.Control 
+                        name="loginEmail" value={ loginEmail } 
+                        onChange={ onLoginInputChange } 
+                        type="text" 
+                        className="form-control"
+                        placeholder="Ingrese Email"/>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Contraseña</Form.Label>
+                    <Form.Control 
+                        name="loginPassword" 
+                        value={ loginPassword } 
+                        onChange={ onLoginInputChange }
+                        type="password" 
+                        className="form-control" 
+                        placeholder="Password" />
+                    </Form.Group>
+
+                    <Button 
+                        variant="primary" 
+                        type="submit" 
+                        onClick={ loginSubmit} 
+                        disabled={loading}>
+                    {loading ? <Spinner animation="border" size="sm" /> : 'Iniciar sesión'}
+                    </Button>
+                </Form>
+                </Card.Body>
+            </Card>
+      </div>
     )
 }
 

@@ -9,8 +9,8 @@ const DetallePicker = () => {
   const [loading, setLoading] = useState(true);
   
 
-  const getPickers = async() => {
-      const res = await fetch(`http://localhost:4001/api/events/picker/${userid}`);
+  const getPicker = async() => {
+      const res = await fetch(`https://2cdp8hndph.execute-api.us-east-1.amazonaws.com/production/api/events/picker/${userid}`);
       const data = await res.json();
       setLoading(false)
       setOrder(data.evento);
@@ -18,7 +18,7 @@ const DetallePicker = () => {
 
 
   useEffect(() => {
-    getPickers();
+    getPicker();
   }, [userid]);
   
   return (

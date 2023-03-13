@@ -56,7 +56,7 @@ const SinglePicker = ({ nombre, email, tienda }) => {
             <div className="card border-danger mb-3" style={{ width: "18rem" }}>
                 <div className="card-header bg-danger">CONTACTABILIDAD</div>
                 <div className="card-body">
-                    <h4 className="card-title">98%</h4>
+                    <h4 className="card-title">91%</h4>
                 </div>
             </div>
         </div>
@@ -66,7 +66,7 @@ const SinglePicker = ({ nombre, email, tienda }) => {
             <div className="card border-info mb-3" style={{ width: "18rem" }}>
                 <div className="card-header bg-info">TIEMPO PEDIDOS</div>
                 <div className="card-body">
-                    <h4 className="card-title">98 min</h4>
+                    <h4 className="card-title">31 min</h4>
                 </div>
             </div>
         </div>

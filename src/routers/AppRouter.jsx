@@ -1,22 +1,42 @@
 import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import LoginScreen from "../auth/LoginScreen";
 import DashboardRoutes from "./DashboardRoutes";
-import { getEnvVariables } from '../helpers/getEnvVariables'
+import { useAuthStore } from "../hooks/useAuthStore";
+import { useEffect } from "react";
 
 const AppRouter = () => {
 
-    const authStatus = 'no-authenticated';
+    const { status, checkAuthToken } = useAuthStore();
 
-    console.log(getEnvVariables());
+    useEffect(() => {
+        checkAuthToken();
+    }, [])
+    
+
+    if ( status === 'checking') {
+        return (
+           <h3>Cargando...</h3> 
+        )
+    }
+
     return (
         <BrowserRouter>
             <Routes>
                 {
-                    authStatus === 'not-authenticated'
-                    ? <Route path="/login" element={<LoginScreen />} />
-                    : <Route path="/*" element={<DashboardRoutes />} />
+                    status === 'not-authenticated'
+                    ? (
+                        <>
+                            <Route path="/*" element={<Navigate to="/auth/login"/> } />
+                            <Route path="/auth/login" element={<LoginScreen />} />
+                        </>
+                    )
+                    : (
+                        <>
+                            <Route path="/auth/login" element={<Navigate to="/"/> } />
+                            <Route path="/*" element={<DashboardRoutes />} />
+                        </>
+                    )
                 }
-                <Route path="/*" element={<Navigate to="/login"/> } />
             </Routes>  
         </BrowserRouter>
     )

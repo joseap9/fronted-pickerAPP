@@ -1,60 +1,95 @@
 import React from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
+import { useAuthStore } from '../hooks/useAuthStore'
 
 
 export const Navbar = () => {
 
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        navigate('/login', {
-            replace: true
-        });
-    }
+    const { startLogout, user } = useAuthStore();
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
                 <div style={{
                         display: "flex",
-                        width: "55%",
+                        width: "40%",
                         direction: "rtl",
                     }}
                 >
-                    <a className="navbar-brand">
+                    <h1 className="navbar-brand" onClick={ () => window.location.reload() }>
                         <Link 
                             className="navbar-brand" 
                             to="/"
                         >
-                            Carlos Dias 💚 Silvia Gonzalez
+                             Picker App ✅
                         </Link>
-                    </a>
+                    </h1>
                 </div>
-            <div className="navbar-collapse">
-                <div className="navbar-nav">
-                    <NavLink 
-                        className={ ({ isActive }) => 'nav-item nav-link ' + (isActive ? 'active' : '') }
-                        to="/"
-                    >
-                    </NavLink>
+                <div className="navbar-collapse">
+                    <div className="navbar-nav">
+                        <NavLink 
+                            className={ ({ isActive }) => 'nav-item nav-link ' + (isActive ? 'active' : '') }
+                            to="/"
+                        >
+                            24H
+                        </NavLink>
+                    </div>
                 </div>
-            </div>
+                <div className="navbar-collapse">
+                    <div className="navbar-nav">
+                        <NavLink 
+                            className={ ({ isActive }) => 'nav-item nav-link ' + (isActive ? 'active' : '') }
+                            to="/last-day"
+                        >
+                            Ultimo Día
+                        </NavLink>
+                    </div>
+                </div>
+                <div className="navbar-collapse">
+                    <div className="navbar-nav">
+                        <NavLink 
+                            className={ ({ isActive }) => 'nav-item nav-link ' + (isActive ? 'active' : '') }
+                            to="/last-seven-days"
+                        >
+                            Semanal Pickers
+                        </NavLink>
+                    </div>
+                </div>
+                <div className="navbar-collapse">
+                    <div className="navbar-nav">
+                        <NavLink 
+                            className={ ({ isActive }) => 'nav-item nav-link ' + (isActive ? 'active' : '') }
+                            to="/last-thirty-days"
+                        >
+                            Mensual Tienda
+                        </NavLink>
+                    </div>
+                </div>
+                <div className="navbar-collapse collapse w-100 order-3 dual-collapse2 d-flex justify-content-end">
+                    <ul className="navbar-nav ml-auto">
+                        <div className="navbar-collapse">
+                            <div className="navbar-nav">
+                                <NavLink 
+                                    className={ ({ isActive }) => 'nav-item nav-link ' + (isActive ? 'active' : '') }
+                                    to="/busqueda"
+                                >
+                                    Buscar
+                                </NavLink>
+                            </div>
+                        </div>
 
-            <div className="navbar-collapse collapse w-100 order-3 dual-collapse2 d-flex justify-content-end">
-                <ul className="navbar-nav ml-auto">
-
-                    <span className="nav-item nav-link text-info">
-                        Jose
-                    </span>
-                    
-                    <button 
-                        className="nav-item nav-link btn-dark" 
-                        onClick={ handleLogout }
-                    >
-                        Logout
-                    </button>
-                </ul>
-            </div>
+                        <span className="nav-item nav-link text-info">
+                            { user.name }
+                        </span>
+                        
+                        <button 
+                            className="nav-item nav-link btn-light" 
+                            onClick={ startLogout }
+                        >
+                            Salir
+                        </button>
+                    </ul>
+                </div>
             </div>
         </nav>
     )
